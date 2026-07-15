@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
 
 // In-memory store for demo mode (no database required)
-// Demo mode is enabled when DATABASE_URL is missing or doesn't look like a real PostgreSQL URL
-const DEMO_MODE = !process.env.DATABASE_URL || 
+// Demo mode is enabled when DATABASE_URL is missing or doesn't look like a real PostgreSQL URL.
+// Disabled outright in production so a misconfigured DATABASE_URL fails loudly (a real DB
+// error) instead of silently serving fake in-memory data.
+const DEMO_MODE = process.env.NODE_ENV !== 'production' && (
+  !process.env.DATABASE_URL ||
   !process.env.DATABASE_URL.startsWith('postgresql://') ||
-  process.env.DATABASE_URL.includes('demo');
+  process.env.DATABASE_URL.includes('demo')
+);
 
 interface DemoStudy {
   id: string;
