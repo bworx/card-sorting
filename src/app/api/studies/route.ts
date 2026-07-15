@@ -106,6 +106,10 @@ export async function GET(request: NextRequest) {
             sessions: true,
           },
         },
+        sessions: {
+          where: { status: 'COMPLETED' },
+          select: { id: true },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });

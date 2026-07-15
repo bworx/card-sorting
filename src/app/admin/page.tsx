@@ -1,18 +1,49 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, FolderKanban, Users, BarChart3, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+interface StudySummary {
+  status: 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'ARCHIVED';
+  _count: { sessions: number };
+  sessions?: { id: string }[];
+}
+
 export default function AdminDashboard() {
-  // In production, these would come from the API
-  const stats = {
-    totalStudies: 3,
-    activeStudies: 1,
-    totalParticipants: 47,
-    avgCompletionRate: 0.89,
-  };
+  const [stats, setStats] = useState({
+    totalStudies: 0,
+    activeStudies: 0,
+    totalParticipants: 0,
+    avgCompletionRate: 0,
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/studies');
+        if (response.ok) {
+          const studies: StudySummary[] = await response.json();
+          const totalSessions = studies.reduce((sum, s) => sum + s._count.sessions, 0);
+          const completedSessions = studies.reduce((sum, s) => sum + (s.sessions?.length ?? 0), 0);
+          setStats({
+            totalStudies: studies.length,
+            activeStudies: studies.filter((s) => s.status === 'ACTIVE').length,
+            totalParticipants: totalSessions,
+            avgCompletionRate: totalSessions > 0 ? completedSessions / totalSessions : 0,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch dashboard stats:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -40,7 +71,7 @@ export default function AdminDashboard() {
               <FolderKanban className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{stats.totalStudies}</p>
+              <p className="text-2xl font-bold">{isLoading ? '—' : stats.totalStudies}</p>
               <p className="text-sm text-muted-foreground">Total Studies</p>
             </div>
           </div>
@@ -52,7 +83,7 @@ export default function AdminDashboard() {
               <FolderKanban className="h-6 w-6 text-emerald-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{stats.activeStudies}</p>
+              <p className="text-2xl font-bold">{isLoading ? '—' : stats.activeStudies}</p>
               <p className="text-sm text-muted-foreground">Active Studies</p>
             </div>
           </div>
@@ -64,7 +95,7 @@ export default function AdminDashboard() {
               <Users className="h-6 w-6 text-blue-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{stats.totalParticipants}</p>
+              <p className="text-2xl font-bold">{isLoading ? '—' : stats.totalParticipants}</p>
               <p className="text-sm text-muted-foreground">Total Participants</p>
             </div>
           </div>
@@ -76,7 +107,7 @@ export default function AdminDashboard() {
               <BarChart3 className="h-6 w-6 text-amber-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{Math.round(stats.avgCompletionRate * 100)}%</p>
+              <p className="text-2xl font-bold">{isLoading ? '—' : `${Math.round(stats.avgCompletionRate * 100)}%`}</p>
               <p className="text-sm text-muted-foreground">Avg Completion</p>
             </div>
           </div>
