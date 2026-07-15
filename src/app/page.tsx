@@ -23,7 +23,7 @@ export default function Home() {
             <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center">
               <FolderKanban className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-bold text-lg text-foreground">Card Sorting</span>
+            <span className="font-bold text-lg text-foreground">Card Sorting AnySurfer</span>
           </div>
           <div className="flex items-center gap-3">
             <Link href="https://github.com/jgadsbypeet/card-sorting" target="_blank">
@@ -54,7 +54,7 @@ export default function Home() {
             A free, accessible alternative to Optimal Workshop and Lyssna. 
             Built with a focus on creating a frictionless experience for participants using assistive technology.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          {/* <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/s/product-features-demo">
               <Button size="lg" className="gap-2">
                 Try Demo Study
@@ -66,7 +66,7 @@ export default function Home() {
                 Create Your Own
               </Button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -111,7 +111,7 @@ export default function Home() {
       </section>
 
       {/* Demo Studies */}
-      <section className="border-t border-border">
+      {/* <section className="border-t border-border">
         <div className="container mx-auto px-4 py-16">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-4">
             Try It Now
@@ -153,10 +153,10 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA */}
-      <section className="border-t border-border bg-primary/5">
+      {/* <section className="border-t border-border bg-primary/5">
         <div className="container mx-auto px-4 py-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
             Ready to run your own study?
@@ -171,7 +171,7 @@ export default function Home() {
             </Button>
           </Link>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="border-t border-border">
