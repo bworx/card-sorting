@@ -97,14 +97,6 @@ export default function LoginPage() {
             )}
           </Button>
         </form>
-
-        {/* Demo note */}
-        <div className="mt-6 rounded-lg bg-muted p-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            <strong>Demo Mode:</strong> Create an account by running the seed script, or skip authentication for now by visiting{' '}
-            <a href="/admin" className="text-primary hover:underline">/admin</a>
-          </p>
-        </div>
       </div>
     </div>
   );
